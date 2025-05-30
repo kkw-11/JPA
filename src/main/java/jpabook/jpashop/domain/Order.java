@@ -59,7 +59,7 @@ public class Order {
     }
 
     public void setDelivery(Delivery delivery) {
-        this.setDelivery(delivery);
+        this.delivery = delivery;
         delivery.setOrder(this);
     }
 
@@ -69,7 +69,7 @@ public class Order {
         order.setMember(member);
         order.setDelivery(delivery);
 
-        for (OrderItem orderItem : order.orderItems) {
+        for (OrderItem orderItem : orderItems) {
             order.addOrderItem(orderItem);
         }
 
@@ -104,7 +104,6 @@ public class Order {
         for (OrderItem orderItem : orderItems) {
             totalPrice += orderItem.getTotalPrice();
         }
-
         return totalPrice;
     }
 }
