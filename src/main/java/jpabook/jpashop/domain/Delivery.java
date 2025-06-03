@@ -1,16 +1,11 @@
 package jpabook.jpashop.domain;
 
-import static jakarta.persistence.FetchType.LAZY;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -21,9 +16,13 @@ public class Delivery {
     @GeneratedValue
     @Column(name = "delivery_id")
     private Long id;
+
+    @JsonIgnore
     @OneToOne(mappedBy = "delivery", fetch = LAZY)
     private Order order;
+
     private Address address;
+
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status;
 }
