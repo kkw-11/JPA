@@ -2,11 +2,12 @@ package jpabook.jpashop.repository;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
-import java.util.List;
 import jpabook.jpashop.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
+
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -27,7 +28,7 @@ public class OrderRepository {
 //    }
 
     public List<Order> findAllByString(OrderSearch orderSearch) {
-//language=JPAQL
+//language=JPQL
         String jpql = "select o From Order o join o.member m";
         boolean isFirstCondition = true;
 //주문 상태 검색
@@ -51,7 +52,7 @@ public class OrderRepository {
             jpql += " m.name like :name";
         }
         TypedQuery<Order> query = em.createQuery(jpql, Order.class)
-            .setMaxResults(1000); //최대 1000건
+                .setMaxResults(1000); //최대 1000건
         if (orderSearch.getOrderStatus() != null) {
             query = query.setParameter("status", orderSearch.getOrderStatus());
         }
@@ -60,4 +61,12 @@ public class OrderRepository {
         }
         return query.getResultList();
     }
+
+    public List<Order> findAllWithMemberDelivery() {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class).getResultList();
+    }
 }
+
